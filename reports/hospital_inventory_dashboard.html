@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hospital Inventory Intelligence System</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --bg: #0a0d12;
+    --surface: #111520;
+    --surface2: #181d28;
+    --border: #1e2535;
+    --text: #e2e8f0;
+    --muted: #4a5568;
+    --critical: #ef4444;
+    --under: #f59e0b;
+    --over: #3b82f6;
+    --healthy: #10b981;
+    --accent: #6366f1;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'Inter', sans-serif;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    padding: 20px 40px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--surface);
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .logo-dot {
+    width: 8px; height: 8px;
+    background: var(--critical);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .header-meta {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .ai-badge {
+    background: rgba(99,102,241,0.15);
+    border: 1px solid rgba(99,102,241,0.3);
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.08em;
+  }
+
+  /* ALERT BANNER */
+  .alert-banner {
+    background: rgba(239,68,68,0.08);
+    border-bottom: 1px solid rgba(239,68,68,0.2);
+    padding: 10px 40px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    color: #fca5a5;
+    font-family: var(--mono);
+  }
+
+  .alert-dot { color: var(--critical); font-size: 16px; }
+
+  /* SUMMARY CARDS */
+  .summary {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    padding: 28px 40px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+
+  .card.critical::before { background: var(--critical); }
+  .card.under::before { background: var(--under); }
+  .card.over::before { background: var(--over); }
+  .card.healthy::before { background: var(--healthy); }
+
+  .card-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+  }
+
+  .card-value {
+    font-family: var(--mono);
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .card.critical .card-value { color: var(--critical); }
+  .card.under .card-value { color: var(--under); }
+  .card.over .card-value { color: var(--over); }
+  .card.healthy .card-value { color: var(--healthy); }
+
+  .card-sub { font-size: 11px; color: var(--muted); }
+
+  /* FILTERS */
+  .filters {
+    padding: 0 40px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .filter-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .filter-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-family: var(--mono);
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.05em;
+  }
+
+  .filter-btn:hover { border-color: var(--accent); color: var(--text); }
+  .filter-btn.active { background: var(--accent); border-color: var(--accent); color: white; }
+  .filter-btn.critical-btn.active { background: var(--critical); border-color: var(--critical); }
+  .filter-btn.under-btn.active { background: var(--under); border-color: var(--under); }
+  .filter-btn.over-btn.active { background: var(--over); border-color: var(--over); }
+
+  .branch-select {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-family: var(--mono);
+    font-size: 11px;
+    cursor: pointer;
+    margin-left: auto;
+    outline: none;
+  }
+
+  /* SECTION HEADER */
+  .section-header {
+    padding: 0 40px 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .count-badge {
+    font-family: var(--mono);
+    font-size: 10px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 2px 8px;
+    border-radius: 10px;
+    color: var(--muted);
+  }
+
+  /* TABLE */
+  .table-wrap {
+    margin: 0 40px 40px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  table { width: 100%; border-collapse: collapse; }
+
+  thead th {
+    background: var(--surface);
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: var(--surface); }
+
+  td {
+    padding: 14px 16px;
+    font-size: 12px;
+    vertical-align: top;
+  }
+
+  .sku-cell { font-family: var(--mono); font-size: 10px; color: var(--muted); }
+  .product-name { font-weight: 500; font-size: 13px; margin-bottom: 2px; }
+  .category-tag {
+    display: inline-block;
+    font-size: 10px;
+    color: var(--muted);
+    font-family: var(--mono);
+  }
+
+  .branch-pill {
+    display: inline-block;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 2px 7px;
+    color: var(--text);
+    white-space: nowrap;
+  }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .status-badge.Critical { background: rgba(239,68,68,0.12); color: var(--critical); border: 1px solid rgba(239,68,68,0.2); }
+  .status-badge.Understocked { background: rgba(245,158,11,0.12); color: var(--under); border: 1px solid rgba(245,158,11,0.2); }
+  .status-badge.Overstocked { background: rgba(59,130,246,0.12); color: var(--over); border: 1px solid rgba(59,130,246,0.2); }
+
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; }
+  .Critical .status-dot { background: var(--critical); }
+  .Understocked .status-dot { background: var(--under); }
+  .Overstocked .status-dot { background: var(--over); }
+
+  .metric-value {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .metric-sub {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .weeks-critical { color: var(--critical); }
+  .weeks-warning { color: var(--under); }
+  .weeks-ok { color: var(--healthy); }
+
+  .variance-pos { color: var(--over); font-family: var(--mono); font-size: 12px; font-weight: 600; }
+  .variance-neg { color: var(--critical); font-family: var(--mono); font-size: 12px; font-weight: 600; }
+
+  /* MINI PROGRESS BAR */
+  .bar-wrap { display: flex; align-items: center; gap: 8px; min-width: 100px; }
+  .bar-track { flex: 1; height: 4px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 2px; }
+
+  /* AI REC */
+  .ai-rec-cell { max-width: 320px; }
+  .ai-tag {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 5px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .ai-tag::before {
+    content: '';
+    display: inline-block;
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  .ai-text {
+    font-size: 11px;
+    color: #94a3b8;
+    line-height: 1.55;
+    border-left: 2px solid var(--accent);
+    padding-left: 8px;
+  }
+
+  /* FOOTER */
+  footer {
+    margin: 0 40px 32px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-note {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  .powered {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-align: right;
+    line-height: 1.8;
+  }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-dot"></div>
+    Hospital Inventory Intelligence System
+  </div>
+  <div class="header-right">
+    <div class="header-meta">4 Branches · 20 SKUs · Week 12 Report</div>
+    <div class="ai-badge">⬡ AI-Powered · Groq LLM</div>
+  </div>
+</header>
+
+<div class="alert-banner">
+  <span class="alert-dot">●</span>
+  <strong>12 CRITICAL ALERTS:</strong>&nbsp; Items with less than 1 week of supply remaining across hospital branches — immediate procurement action required.
+</div>
+
+<div class="summary">
+  <div class="card critical">
+    <div class="card-label">Critical — &lt;1 Week Supply</div>
+    <div class="card-value">12</div>
+    <div class="card-sub">Immediate reorder required</div>
+  </div>
+  <div class="card under">
+    <div class="card-label">Understocked</div>
+    <div class="card-value">17</div>
+    <div class="card-sub">Below reorder threshold</div>
+  </div>
+  <div class="card over">
+    <div class="card-label">Overstocked</div>
+    <div class="card-value">18</div>
+    <div class="card-sub">Excess stock — expiry risk</div>
+  </div>
+  <div class="card healthy">
+    <div class="card-label">Healthy</div>
+    <div class="card-value">33</div>
+    <div class="card-sub">Within optimal range</div>
+  </div>
+</div>
+
+<div class="filters">
+  <span class="filter-label">Filter:</span>
+  <button class="filter-btn active" onclick="filterStatus('All')">All Flagged (47)</button>
+  <button class="filter-btn critical-btn" onclick="filterStatus('Critical')">Critical (12)</button>
+  <button class="filter-btn under-btn" onclick="filterStatus('Understocked')">Understocked (17)</button>
+  <button class="filter-btn over-btn" onclick="filterStatus('Overstocked')">Overstocked (18)</button>
+  <select class="branch-select" onchange="filterBranch(this.value)">
+    <option value="All">All Branches</option>
+    <option value="North Branch">North Branch</option>
+    <option value="South Branch">South Branch</option>
+    <option value="East Branch">East Branch</option>
+    <option value="West Branch">West Branch</option>
+  </select>
+</div>
+
+<div class="section-header">
+  <span class="section-title">Inventory Risk Report</span>
+  <span class="count-badge" id="rowCount">47 items</span>
+  <div class="section-line"></div>
+</div>
+
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr>
+      <th>SKU / Product</th>
+      <th>Branch</th>
+      <th>Status</th>
+      <th>Stock vs Reorder</th>
+      <th>Weeks of Supply</th>
+      <th>Variance %</th>
+      <th>AI Recommendation</th>
+    </tr>
+  </thead>
+  <tbody id="tableBody"></tbody>
+</table>
+</div>
+
+<footer>
+  <div class="footer-note">
+    Data: Hospital consumables — 4 branches, 20 SKUs, 12-week usage cycle<br>
+    Stack: Python · pandas · MySQL · MCP Server · Groq LLM (llama-3.1-8b-instant)<br>
+    Built by Swathi · MIS, Illinois Institute of Technology · 2025
+  </div>
+  <div class="powered">
+    ⬡ AI Recommendations via Groq API<br>
+    Database: MySQL · SQLyog · Claude Desktop MCP<br>
+    Analysis: Python · pandas · seaborn
+  </div>
+</footer>
+
+<script>
+const data = [{"Branch": "West Branch", "SKU": "WND-002", "Product_Name": "Bandage Rolls 4 inch", "Category": "Wound Care", "Current_Stock": 53, "Reorder_Point": 150, "Max_Stock": 700, "Unit_Price_USD": 1.1, "Avg_Weekly_Usage": 86.33, "Weeks_of_Supply": 0.6, "Variance_Pct": -64.7, "Stock_Status": "Critical", "Reorder_Urgency": "Critical", "AI_Recommendation": "Urgency Level: High Actionable Recommendation: Immediately replenish the Bandage Rolls 4 inch inventory at the West Branch location with a quantity of 250 units to ensure sufficient stock levels and avoid stockouts. This reorder quantity is approximately 67% above the current stock level and 41% above the established reorder point to account for ongoing demand fluctuations and potential supply chain delays. This expedited action will mitigate the existing critical stock status and maintain a weeks-of-supply cushion of at least 1.5 weeks."}, {"Branch": "West Branch", "SKU": "INJ-001", "Product_Name": "Syringes 5ml with Needle", "Category": "Injection & Infusion", "Current_Stock": 52, "Reorder_Point": 150, "Max_Stock": 600, "Unit_Price_USD": 12.5, "Avg_Weekly_Usage": 84.0, "Weeks_of_Supply": 0.6, "Variance_Pct": -65.3, "Stock_Status": "Critical", "Reorder_Urgency": "Critical", "AI_Recommendation": "Urgency Level: High Given the critical stock status and weeks of supply remaining, I recommend that the West Branch immediately place an emergency order for 230 units of Syringes 5ml with Needle to replenish their inventory and ensure ongoing patient care. This order will ensure that the branch meets its average weekly demand until the next regular ordering cycle, minimizing the risk of stockouts."}, {"Branch": "North Branch", "SKU": "GEN-002", "Product_Name": "Urine Collection Cups", "Category": "General Supplies", "Current_Stock": 67, "Reorder_Point": 200, "Max_Stock": 800, "Unit_Price_USD": 0.45, "Avg_Weekly_Usage": 95.83, "Weeks_of_Supply": 0.7, "Variance_Pct": -66.5, "Stock_Status": "Critical", "Reorder_Urgency": "Critical", "AI_Recommendation": "Actionable Recommendation: High Urgency (Urgency Level: 9/10) Reorder 233 units of Urine Collection Cups immediately to replenish the critical stock level at North Branch. This is slightly above the average weekly usage to ensure a stable supply, while taking into account the current stock and critical stock status to avoid any service disruptions. Monitor the inventory and adjust the reorder point as needed to maintain an optimal stock level."}, {"Branch": "North Branch", "SKU": "INJ-004", "Product_Name": "Infusion Sets with Filter", "Category": "Injection & Infusion", "Current_Stock": 53, "Reorder_Point": 150, "Max_Stock": 600, "Unit_Price_USD": 2.25, "Avg_Weekly_Usage": 74.33, "Weeks_of_Supply": 0.7, "Variance_Pct": -64.7, "Stock_Status": "Critical", "Reorder_Urgency": "Critical", "AI_Recommendation": "Urgency Level: High Given the critical stock status and negative variance from the reorder point, I recommend an Emergency Reorder with a Suggested Quantity of 200-250 units to ensure North Branch has adequate inventory to meet its average weekly usage of 74.33 units. This urgent reordering will prevent stockouts and maintain business continuity, while also providing a buffer to absorb any potential variability in usage."}, {"Branch": "North Branch", "SKU": "PPE-003", "Product_Name": "N95 Respirators (Box/20)", "Category": "PPE", "Current_Stock": 35, "Reorder_Point": 100, "Max_Stock": 400, "Unit_Price_USD": 24.99, "Avg_Weekly_Usage": 49.67, "Weeks_of_Supply": 0.7, "Variance_Pct": -65.0, "Stock_Status": "Critical", "Reorder_Urgency": "Critical", "AI_Recommendation": "Urgency Level: High Recommendation: We strongly advise Replenishing the North Branch's N95 Respirators immediately, with an urgent order of at least 250 units to bring the branch's stock level to a more sustainable 5-7 weeks of supply and ensure uninterrupted patient care. This order should be expedited to meet the critical stock status and prevent a stockout situation."}, {"Branch": "North Branch", "SKU": "GEN-007", "Product_Name": "Oxygen Masks Adult", "Category": "General Supplies", "Current_Stock": 27, "Reorder_Point": 80, "Max_Stock": 350, "Unit_Price_USD": 3.5, "Avg_Weekly_Usage": 35.5, "Weeks_of_Supply": 0.8, "Variance_Pct": -66.2, "Stock_Status": "Critical", "Reorder_Urgency": "Critical", "AI_Recommendation": "Recommendation: Given the critical stock status and high variance from the reorder point at North Branch, I recommend an immediate reorder of 150 units of Oxygen Masks Adult. This quantity ensures a minimum of 2 weeks of supply at an average usage rate, while also allowing for replenishment of the stock in time to prevent future stockouts. Urgency: High"}, {"Branch": "South Branch", "SKU": "PPE-004", "Product_Name": "Isolation Gowns Disposable", "Category": "PPE", "Current_Stock": 103, "Reorder_Point": 300, "Max_Stock": 1200, "Unit_Price_USD": 1.75, "Avg_Weekly_Usage": 128.92, "Weeks_of_Supply": 0.8, "Variance_Pct": -65.7, "Stock_Status": "Critical", "Reorder_Urgency": "Critical", "AI_Recommendation": "High Urgency Recommendation Based on the critical stock status and variance from the reorder point, I strongly recommend ordering 300-400 units of Isolation Gowns Disposable to replenish the stock at South Branch as soon as possible. This urgent action is necessary to prevent stockouts and ensure continuous supply of essential PPE, minimizing disruptions to patient care. Order validation and confirmation should be expedited to prevent further delays in delivery."}, {"Branch": "South Branch", "SKU": "GEN-006", "Product_Name": "Pulse Oximeter Probes Disposable", "Category": "General Supplies", "Current_Stock": 28, "Reorder_Point": 80, "Max_Stock": 350, "Unit_Price_USD": 2.8, "Avg_Weekly_Usage": 35.08, "Weeks_of_Supply": 0.8, "Variance_Pct": -65.0, "Stock_Status": "Critical", "Reorder_Urgency": "Critical", "AI_Recommendation": "Urgency Level: High Priority Considering the critical stock status and the significant variance (-65%) from the reorder point, I recommend that the South Branch immediately orders an additional 150 units of Pulse Oximeter Probes Disposable to replenish stock and avoid any stockouts or delays in patient care. This order should be expedited to ensure timely delivery and prevent any potential disruptions."}, {"Branch": "South Branch", "SKU": "WND-001", "Product_Name": "Gauze Swabs Sterile 4x4 (Pack/10)", "Category": "Wound Care", "Current_Stock": 66, "Reorder_Point": 200, "Max_Stock": 900, "Unit_Price_USD": 3.2, "Avg_Weekly_Usage": 74.25, "Weeks_of_Supply": 0.9, "Variance_Pct": -67.0, "Stock_Status": "Critical", "Reorder_Urgency": "Critical", "AI_Recommendation": "Urgency Level: High I strongly recommend that the South Branch immediately replenishes its stock of Gauze Swabs Sterile 4x4 to avoid a stockout, as the current stock of 66 units will deplete within a week. To address this critical shortage, I suggest ordering 300-400 units as soon as possible, which will not only meet the reorder point but also provide a buffer to account for potential fluctuations in demand. This expedited restock should be prioritized to maintain supply chain continuity and ensure uninterrupted patient care."}, {"Branch": "East Branch", "SKU": "PPE-002", "Product_Name": "Surgical Face Masks (Box/50)", "Category": "PPE", "Current_Stock": 52, "Reorder_Point": 150, "Max_Stock": 600, "Unit_Price_USD": 6.5, "Avg_Weekly_Usage": 50.83, "Weeks_of_Supply": 1.0, "Variance_Pct": -65.3, "Stock_Status": "Critical", "Reorder_Urgency": "Critical", "AI_Recommendation": "Urgency Level: High Recommended Action: Reorder 300 units of Surgical Face Masks as soon as possible to maintain a minimum of 3 weeks of inventory supply and avoid future stockouts. Given the critical stock status and significant variance (-65.3%) from the reorder point, this proactive adjustment will help mitigate supply chain risks and ensure business continuity."}, {"Branch": "East Branch", "SKU": "INJ-002", "Product_Name": "IV Catheters 18G", "Category": "Injection & Infusion", "Current_Stock": 34, "Reorder_Point": 100, "Max_Stock": 400, "Unit_Price_USD": 18.75, "Avg_Weekly_Usage": 31.42, "Weeks_of_Supply": 1.1, "Variance_Pct": -66.0, "Stock_Status": "Critical", "Reorder_Urgency": "Critical", "AI_Recommendation": "Urgency Level: Critical Based on the low stock status, we recommend that East Branch urgently place a reorder for 100 units of IV Catheters 18G to replenish the inventory and meet the average weekly demand. This is imperative to avoid stockouts and minimize service disruptions.  Suggested Reorder Quantity: 120 units (to account for any unexpected delays and ensure timely restocking)"}, {"Branch": "East Branch", "SKU": "GEN-001", "Product_Name": "Tongue Depressors (Pack/100)", "Category": "General Supplies", "Current_Stock": 29, "Reorder_Point": 80, "Max_Stock": 400, "Unit_Price_USD": 2.3, "Avg_Weekly_Usage": 25.08, "Weeks_of_Supply": 1.2, "Variance_Pct": -63.7, "Stock_Status": "Critical", "Reorder_Urgency": "Critical", "AI_Recommendation": "Recommendation: Level: High Urgency (Immediate Action Required) We strongly advise East Branch to place an emergency order for approximately 120 units of Tongue Depressors (Pack/100) to restore the stock to a more manageable level and prevent stockouts. This reorder quantity will help replenish the stock, ensuring that the branch has a minimum of 3 weeks of supply (exceeding the desired 2 weeks) and will help maintain sufficient inventory levels moving forward."}, {"Branch": "West Branch", "SKU": "PPE-003", "Product_Name": "N95 Respirators (Box/20)", "Category": "PPE", "Current_Stock": 77, "Reorder_Point": 100, "Max_Stock": 400, "Unit_Price_USD": 24.99, "Avg_Weekly_Usage": 58.92, "Weeks_of_Supply": 1.3, "Variance_Pct": -23.0, "Stock_Status": "Understocked", "Reorder_Urgency": "Critical", "AI_Recommendation": "Urgency Level: High Based on the current stock status and weekly usage, I recommend a same-day emergency order of 120-150 units of N95 Respirators for the West Branch to meet the upcoming demand and avoid stockouts, taking into account a 15-30% buffer for any unexpected fluctuations. This will enable us to meet the reorder point of 100 units and maintain an optimal stock level of 2-3 weeks of supply, ensuring adequate inventory to support patient care."}, {"Branch": "West Branch", "SKU": "INJ-003", "Product_Name": "IV Tubing Sets", "Category": "Injection & Infusion", "Current_Stock": 154, "Reorder_Point": 200, "Max_Stock": 800, "Unit_Price_USD": 1.95, "Avg_Weekly_Usage": 114.42, "Weeks_of_Supply": 1.3, "Variance_Pct": -23.0, "Stock_Status": "Understocked", "Reorder_Urgency": "Critical", "AI_Recommendation": "Urgency Level: High Recommendation: Due to the understocked status and low weeks of supply remaining, we should immediately reorder IV Tubing Sets for the West Branch location. To avoid stockouts, a reorder quantity of 350 units should be placed, ensuring that the Weeks of Supply Remaining (WoSR) target range of 2-3 weeks is met at 2.4 weeks."}, {"Branch": "West Branch", "SKU": "GEN-007", "Product_Name": "Oxygen Masks Adult", "Category": "General Supplies", "Current_Stock": 57, "Reorder_Point": 80, "Max_Stock": 350, "Unit_Price_USD": 3.5, "Avg_Weekly_Usage": 44.5, "Weeks_of_Supply": 1.3, "Variance_Pct": -28.7, "Stock_Status": "Understocked", "Reorder_Urgency": "Critical", "AI_Recommendation": "Urgency Level: High We recommend immediately reordering 140 units of Oxygen Masks Adult for West Branch to replenish inventory and prevent stockouts. This amount ensures the branch maintains a minimum 3 weeks of supply and aligns closely with the reorder point of 80 units, considering the current usage and potential safety stock needed. Given the high usage rate and understocked status, it is essential to expedite this order to avoid stock shortages."}, {"Branch": "West Branch", "SKU": "GEN-005", "Product_Name": "Disposable Bed Sheets", "Category": "General Supplies", "Current_Stock": 107, "Reorder_Point": 150, "Max_Stock": 700, "Unit_Price_USD": 1.3, "Avg_Weekly_Usage": 79.42, "Weeks_of_Supply": 1.3, "Variance_Pct": -28.7, "Stock_Status": "Understocked", "Reorder_Urgency": "Critical", "AI_Recommendation": "Urgency Level: High Recommended Action: Immediately place an order for 250-300 units of Disposable Bed Sheets for the West Branch to bring the stock levels to a safe threshold, considering the high average weekly demand and current understocked status. This will help prevent potential stockouts and ensure continued service to patients."}, {"Branch": "West Branch", "SKU": "WND-004", "Product_Name": "Antiseptic Wipes (Pack/100)", "Category": "Wound Care", "Current_Stock": 85, "Reorder_Point": 120, "Max_Stock": 500, "Unit_Price_USD": 5.4, "Avg_Weekly_Usage": 62.25, "Weeks_of_Supply": 1.4, "Variance_Pct": -29.2, "Stock_Status": "Understocked", "Reorder_Urgency": "Critical", "AI_Recommendation": "Actionable Recommendation: High Urgency: Immediately place an order to restock Antiseptic Wipes at West Branch, as the current stock level is critically low, indicating an urgent need for replenishment.  Recommended Reorder Quantity: Order 140 units to 160 units, allowing for a buffer to cover unexpected usage spikes and ensuring a replenishment period that aligns with the expected usage rate while avoiding overstocking. Reason: The current stock level of 85 units is below the recommended reorder point of 120 units, and the remaining stock will cover only 1.4 weeks of usage, which is a relatively short period considering the average weekly usage of 62.25 units. This order will help restore a more stable"}, {"Branch": "North Branch", "SKU": "INJ-001", "Product_Name": "Syringes 5ml with Needle", "Category": "Injection & Infusion", "Current_Stock": 108, "Reorder_Point": 150, "Max_Stock": 600, "Unit_Price_USD": 12.5, "Avg_Weekly_Usage": 76.25, "Weeks_of_Supply": 1.4, "Variance_Pct": -28.0, "Stock_Status": "Understocked", "Reorder_Urgency": "Critical", "AI_Recommendation": "Actionable Recommendation: Urgency Level: High Immediately place an order for 250 units of Syringes 5ml with Needle for the North Branch to restock the inventory and avoid stockouts. This is necessary due to the critical understocked status, low weeks of supply remaining, and high average weekly usage.  Rationale: Ordering 250 units will also help to build some buffer stock to ensure that the branch can operate without stockouts for a reasonable period and will help to avoid frequent reorders."}, {"Branch": "North Branch", "SKU": "PPE-001", "Product_Name": "Nitrile Examination Gloves (Box/100)", "Category": "PPE", "Current_Stock": 148, "Reorder_Point": 200, "Max_Stock": 800, "Unit_Price_USD": 8.99, "Avg_Weekly_Usage": 103.75, "Weeks_of_Supply": 1.4, "Variance_Pct": -26.0, "Stock_Status": "Understocked", "Reorder_Urgency": "Critical", "AI_Recommendation": "Actionable Recommendation:  Urgency Level: High Given the current stock status of 'Understocked' and only 1.4 weeks of supply remaining, it is essential to immediately place a reordering action for the Nitrile Examination Gloves. We recommend ordering at least 420 units (2 weeks of supply) to replenish inventory to a safe level and ensure uninterrupted supply to the North Branch.  This proactive measure will also prevent potential stockouts, minimize the risk of missed orders, and maintain optimal inventory levels while aligning with the established reorder point of 200 units."}, {"Branch": "North Branch", "SKU": "GEN-005", "Product_Name": "Disposable Bed Sheets", "Category": "General Supplies", "Current_Stock": 112, "Reorder_Point": 150, "Max_Stock": 700, "Unit_Price_USD": 1.3, "Avg_Weekly_Usage": 72.83, "Weeks_of_Supply": 1.5, "Variance_Pct": -25.3, "Stock_Status": "Understocked", "Reorder_Urgency": "Critical", "AI_Recommendation": "Actionable Recommendation: High Urgency Due to the extremely low levels of disposable bed sheets at North Branch, which are running 25.3% below the reorder point, we recommend reordering 300 units immediately to restock the inventory and avoid stockouts. This replenishment will help to meet the average weekly usage of 72.83 units, increasing the weeks of supply remaining to at least 4.2 weeks and ensuring that the inventory is no longer understocked."}, {"Branch": "North Branch", "SKU": "WND-002", "Product_Name": "Bandage Rolls 4 inch", "Category": "Wound Care", "Current_Stock": 107, "Reorder_Point": 150, "Max_Stock": 700, "Unit_Price_USD": 1.1, "Avg_Weekly_Usage": 68.5, "Weeks_of_Supply": 1.6, "Variance_Pct": -28.7, "Stock_Status": "Understocked", "Reorder_Urgency": "Critical", "AI_Recommendation": "Based on the given data, I recommend that North Branch reorders 240-300 units of 4-inch Bandage Rolls immediately (urgent) to replenish their stock and bring their Weeks of Supply Remaining up to a more optimal level of 3-4 weeks. This is necessary to avoid stockouts and ensure uninterrupted patient care. Due to the high usage rate and current stock levels, it is crucial to act quickly to prevent an understocked situation."}, {"Branch": "South Branch", "SKU": "PPE-002", "Product_Name": "Surgical Face Masks (Box/50)", "Category": "PPE", "Current_Stock": 108, "Reorder_Point": 150, "Max_Stock": 600, "Unit_Price_USD": 6.5, "Avg_Weekly_Usage": 64.5, "Weeks_of_Supply": 1.7, "Variance_Pct": -28.0, "Stock_Status": "Understocked", "Reorder_Urgency": "Critical", "AI_Recommendation": "I recommend reordering Surgical Face Masks for the South Branch with a high urgency due to the understocked status and low weeks of supply remaining (1.7 weeks). To replenish stock levels, I suggest ordering a quantity that takes into account the average weekly usage and ensures a safety stock buffer, such as 200-220 units. This will cover approximately 3-3.5 weeks of supply, allowing the branch to return to a more optimal stock status and buffer against future demand fluctuations."}, {"Branch": "South Branch", "SKU": "WND-004", "Product_Name": "Antiseptic Wipes (Pack/100)", "Category": "Wound Care", "Current_Stock": 86, "Reorder_Point": 120, "Max_Stock": 500, "Unit_Price_USD": 5.4, "Avg_Weekly_Usage": 48.58, "Weeks_of_Supply": 1.8, "Variance_Pct": -28.3, "Stock_Status": "Understocked", "Reorder_Urgency": "Critical", "AI_Recommendation": "Urgency Level: High Given the understocked status and only 1.8 weeks of supply remaining, I recommend a same-day reordering of 180 units to meet the average weekly usage and prevent a potential stockout at the South Branch. This will ensure timely replenishment and bring the branch's stock level up to 266 units, exceeding the reorder point of 120 units to avoid future stockouts."}, {"Branch": "South Branch", "SKU": "INJ-003", "Product_Name": "IV Tubing Sets", "Category": "Injection & Infusion", "Current_Stock": 150, "Reorder_Point": 200, "Max_Stock": 800, "Unit_Price_USD": 1.95, "Avg_Weekly_Usage": 79.08, "Weeks_of_Supply": 1.9, "Variance_Pct": -25.0, "Stock_Status": "Understocked", "Reorder_Urgency": "Critical", "AI_Recommendation": "Actionable Recommendation: High-Urgency (Request for Reorder within the next 2 working days) We need to quickly restock the IV Tubing Sets at South Branch to maintain a minimum 2-week supply and avoid stockouts. To do this, we recommend reordering 250 units of IV Tubing Sets as a one-time replenishment order to quickly meet the reordering threshold (200 units), with an additional 50 units to cover increased demand and reduce the risk of stock depletion."}, {"Branch": "South Branch", "SKU": "GEN-003", "Product_Name": "Sharps Containers 1 Gallon", "Category": "General Supplies", "Current_Stock": 46, "Reorder_Point": 60, "Max_Stock": 300, "Unit_Price_USD": 3.75, "Avg_Weekly_Usage": 24.25, "Weeks_of_Supply": 1.9, "Variance_Pct": -23.3, "Stock_Status": "Understocked", "Reorder_Urgency": "Critical", "AI_Recommendation": "Urgency Level: High Actionable Recommendation: Immediately order 90 units of Sharps Containers 1 Gallon to replenish the severely understocked condition at South Branch, ensuring sufficient supply to meet the average weekly usage of 24.25 units. This order will provide a buffer to maintain a minimum of 3 weeks of supply, reducing the risk of stockouts and ensuring continuity of patient care. Due to the -23.3% variance from the reorder point, it is essential to act quickly to prevent further stock depletion."}, {"Branch": "East Branch", "SKU": "PPE-005", "Product_Name": "Face Shields Disposable", "Category": "PPE", "Current_Stock": 73, "Reorder_Point": 100, "Max_Stock": 500, "Unit_Price_USD": 2.1, "Avg_Weekly_Usage": 34.0, "Weeks_of_Supply": 2.1, "Variance_Pct": -27.0, "Stock_Status": "Understocked", "Reorder_Urgency": "High", "AI_Recommendation": "Based on the inventory data, I recommend immediately reordering 127 units of Face Shields Disposable with high urgency due to the understocked status and low weeks of supply remaining. This reorder quantity will bring the total stock up to 200 units, well above the reorder point, and ensure a replenishment timeline of approximately 4.8 weeks, providing a reasonable buffer for future demand. This action will help prevent stockouts and maintain inventory levels at a safe threshold."}, {"Branch": "East Branch", "SKU": "WND-003", "Product_Name": "Surgical Adhesive Tape 1 inch", "Category": "Wound Care", "Current_Stock": 77, "Reorder_Point": 100, "Max_Stock": 500, "Unit_Price_USD": 0.85, "Avg_Weekly_Usage": 32.58, "Weeks_of_Supply": 2.4, "Variance_Pct": -23.0, "Stock_Status": "Understocked", "Reorder_Urgency": "High", "AI_Recommendation": "Urgency Level: High Considering the understocked status and the low weeks of supply remaining (2.4 weeks), I strongly recommend reordering 180 units of Surgical Adhesive Tape 1 inch for East Branch immediately. This will ensure that the branch maintains a sufficient stock level and avoids stockouts, meeting the average weekly demand and replenishing the inventory up to 100 units (the reorder point)."}, {"Branch": "East Branch", "SKU": "WND-001", "Product_Name": "Gauze Swabs Sterile 4x4 (Pack/10)", "Category": "Wound Care", "Current_Stock": 145, "Reorder_Point": 200, "Max_Stock": 900, "Unit_Price_USD": 3.2, "Avg_Weekly_Usage": 61.33, "Weeks_of_Supply": 2.4, "Variance_Pct": -27.5, "Stock_Status": "Understocked", "Reorder_Urgency": "High", "AI_Recommendation": "Urgency Level: High I recommend that East Branch immediately reorders 350 units of Gauze Swabs Sterile 4x4 (Pack/10) to ensure sufficient inventory levels and avoid stockouts. This reorder quantity is calculated to cover the average weekly usage for 5.3 weeks, providing a buffer against any potential demand increases. I suggest expediting the reorder process to maintain a stable and reliable inventory supply."}, {"Branch": "East Branch", "SKU": "GEN-004", "Product_Name": "Hand Sanitizer 500ml", "Category": "General Supplies", "Current_Stock": 71, "Reorder_Point": 100, "Max_Stock": 500, "Unit_Price_USD": 4.2, "Avg_Weekly_Usage": 29.42, "Weeks_of_Supply": 2.4, "Variance_Pct": -29.0, "Stock_Status": "Understocked", "Reorder_Urgency": "High", "AI_Recommendation": "Given the East Branch is understocked and only has 2.4 weeks of supply remaining, I recommend that the hospital administration prioritize an urgent order of Hand Sanitizer 500ml to ensure uninterrupted patient care. I suggest ordering 130 units to replenish the inventory and bring the stock level above the reorder point, considering the 10% buffer for any potential discrepancies. This recommendation should be implemented as soon as possible to prevent stockouts and maintain continuity of essential hygiene supplies."}, {"Branch": "West Branch", "SKU": "PPE-004", "Product_Name": "Isolation Gowns Disposable", "Category": "PPE", "Current_Stock": 1088, "Reorder_Point": 300, "Max_Stock": 1200, "Unit_Price_USD": 1.75, "Avg_Weekly_Usage": 180.83, "Weeks_of_Supply": 6.0, "Variance_Pct": 262.7, "Stock_Status": "Overstocked", "Reorder_Urgency": "Medium", "AI_Recommendation": "Actionable Recommendation: Considering the West Branch's isolation gowns are overstocked by 262.7% and there are 6 weeks of supply remaining, I recommend reducing the stock level as soon as possible by returning or re-shelving excess units to avoid unnecessary holding costs. I suggest a medium-urgency level for this action, as it does not affect immediate patient care needs but can help optimize resource utilization and minimize storage constraints. To balance stock levels and align with the reorder point, I recommend reordering 120 units to ensure an adequate supply for upcoming needs. Urgency Level: Medium (within 2-4 weeks)  Reorder Quantity: 120 units"}, {"Branch": "West Branch", "SKU": "PPE-001", "Product_Name": "Nitrile Examination Gloves (Box/100)", "Category": "PPE", "Current_Stock": 727, "Reorder_Point": 200, "Max_Stock": 800, "Unit_Price_USD": 8.99, "Avg_Weekly_Usage": 118.58, "Weeks_of_Supply": 6.1, "Variance_Pct": 263.5, "Stock_Status": "Overstocked", "Reorder_Urgency": "Medium", "AI_Recommendation": "Urgency Level: Medium Actionable Recommendation: Reduce the overstocked Nitrile Examination Gloves by ordering 500 units to be received at the West Branch, allowing for a more efficient inventory balance while maintaining a cushion against future demand spikes. This recommendation aims to mitigate the current overstock, decrease excess storage requirements, and maintain a safety buffer (approximately 2 weeks of supply) to prevent stockouts."}, {"Branch": "West Branch", "SKU": "INJ-004", "Product_Name": "Infusion Sets with Filter", "Category": "Injection & Infusion", "Current_Stock": 528, "Reorder_Point": 150, "Max_Stock": 600, "Unit_Price_USD": 2.25, "Avg_Weekly_Usage": 82.83, "Weeks_of_Supply": 6.4, "Variance_Pct": 252.0, "Stock_Status": "Overstocked", "Reorder_Urgency": "Medium", "AI_Recommendation": "Based on the analysis, I recommend Immediate reorder action at the West Branch to align inventory levels with operational needs. Urgency Level: High Recommendation: Reorder 180 units of Infusion Sets with Filter to reduce the stock level to a safe zone (weeks of supply remaining at 4) and improve inventory turnover while avoiding unnecessary holding costs associated with overstocking. This reorder quantity is a conservative approach, taking into account the current reorder point and avoiding overstocking."}, {"Branch": "North Branch", "SKU": "PPE-002", "Product_Name": "Surgical Face Masks (Box/50)", "Category": "PPE", "Current_Stock": 576, "Reorder_Point": 150, "Max_Stock": 600, "Unit_Price_USD": 6.5, "Avg_Weekly_Usage": 79.33, "Weeks_of_Supply": 7.3, "Variance_Pct": 284.0, "Stock_Status": "Overstocked", "Reorder_Urgency": "Medium", "AI_Recommendation": "Actionable Recommendation: With the current overstocked status and significant variance from the reorder point, I recommend reducing inventory levels at North Branch by minimizing future orders. Urgency Level: High. To achieve this, I suggest reordering 100 units of Surgical Face Masks immediately to replenish stock and avoid further overstocking, and adjust the procurement process to ensure orders are aligned with actual demand to avoid future imbalances. This approach will reduce unnecessary inventory holding costs, minimize waste, and optimize supply chain efficiency, while also ensuring adequate stock is maintained to meet ongoing demand."}, {"Branch": "North Branch", "SKU": "INJ-002", "Product_Name": "IV Catheters 18G", "Category": "Injection & Infusion", "Current_Stock": 351, "Reorder_Point": 100, "Max_Stock": 400, "Unit_Price_USD": 18.75, "Avg_Weekly_Usage": 46.25, "Weeks_of_Supply": 7.6, "Variance_Pct": 251.0, "Stock_Status": "Overstocked", "Reorder_Urgency": "Medium", "AI_Recommendation": "Actionable Recommendation: Based on the current stock levels and usage patterns, I strongly recommend that the North Branch hospital reduces its stock levels by minimizing non-essential orders. We should sell or transfer excess units to other branches and implement a corrective action to prevent overstocking. The urgency level for this issue is High due to the significant stock surplus and potential financial implications. Urgency Level: High Suggested Reorder Quantity: Immediately reduce stock levels, but for reordering purposes, initiate a smaller quantity order (e.g., 50-75 units) to allow some buffer while preventing overstocking and aligning with the current utilization rate. Regular reviews should ensure the reorder point is updated to reflect accurate data and"}, {"Branch": "West Branch", "SKU": "GEN-001", "Product_Name": "Tongue Depressors (Pack/100)", "Category": "General Supplies", "Current_Stock": 379, "Reorder_Point": 80, "Max_Stock": 400, "Unit_Price_USD": 2.3, "Avg_Weekly_Usage": 47.08, "Weeks_of_Supply": 8.1, "Variance_Pct": 373.8, "Stock_Status": "Overstocked", "Reorder_Urgency": "Low", "AI_Recommendation": "Actionable Recommendation: Due to the significant overstock (373.8% above reorder point) at the West Branch for Tongue Depressors, we recommend that the inventory be reduced through stockroom adjustments or donations to other facilities by the end of the quarter to maintain optimal inventory levels. It is imperative that this action be taken by Urgency Level: High to avoid further overstock accumulation. Recommended Reorder Quantity: 80 units to maintain optimal stock levels, aligning with the set reorder point."}, {"Branch": "West Branch", "SKU": "GEN-004", "Product_Name": "Hand Sanitizer 500ml", "Category": "General Supplies", "Current_Stock": 472, "Reorder_Point": 100, "Max_Stock": 500, "Unit_Price_USD": 4.2, "Avg_Weekly_Usage": 56.83, "Weeks_of_Supply": 8.3, "Variance_Pct": 372.0, "Stock_Status": "Overstocked", "Reorder_Urgency": "Low", "AI_Recommendation": "Based on the provided inventory data, I recommend reducing the overstock of Hand Sanitizer 500ml at the West Branch by immediately selling or transferring 200 units (a quantity that would align with the current usage rate of 56.83 units per week) to mitigate excessive inventory levels and maintain a more optimal stock balance. This action is high urgency, as the current stock levels suggest a significant surplus (over 372% above the reorder point)."}, {"Branch": "South Branch", "SKU": "PPE-001", "Product_Name": "Nitrile Examination Gloves (Box/100)", "Category": "PPE", "Current_Stock": 744, "Reorder_Point": 200, "Max_Stock": 800, "Unit_Price_USD": 8.99, "Avg_Weekly_Usage": 85.5, "Weeks_of_Supply": 8.7, "Variance_Pct": 272.0, "Stock_Status": "Overstocked", "Reorder_Urgency": "Low", "AI_Recommendation": "Urgency Level: Medium-High Recommendation (Immediate Action Required): Reduce the inventory of Nitrile Examination Gloves by 400 units to avoid holding excessive stock. Order a new shipment of 400 units to adjust the stock level to meet demand and replenish inventory for the next 8.7 weeks."}, {"Branch": "South Branch", "SKU": "INJ-001", "Product_Name": "Syringes 5ml with Needle", "Category": "Injection & Infusion", "Current_Stock": 567, "Reorder_Point": 150, "Max_Stock": 600, "Unit_Price_USD": 12.5, "Avg_Weekly_Usage": 61.08, "Weeks_of_Supply": 9.3, "Variance_Pct": 278.0, "Stock_Status": "Overstocked", "Reorder_Urgency": "Low", "AI_Recommendation": "Actionable Recommendation: Urgency - High Given the significant overstock (278% variance from reorder point) and long lead time before a low stock situation (9.3 weeks), we should promptly reduce inventory stock levels. Immediate Reorder Quantity: Calculate and order 50 units (33% of the current stock) to alleviate overstocked conditions while still maintaining a buffer for fluctuations. Reorder promptly to minimize excess holding costs and optimize supply chain efficiency."}, {"Branch": "North Branch", "SKU": "WND-003", "Product_Name": "Surgical Adhesive Tape 1 inch", "Category": "Wound Care", "Current_Stock": 481, "Reorder_Point": 100, "Max_Stock": 500, "Unit_Price_USD": 0.85, "Avg_Weekly_Usage": 51.08, "Weeks_of_Supply": 9.4, "Variance_Pct": 381.0, "Stock_Status": "Overstocked", "Reorder_Urgency": "Low", "AI_Recommendation": "Urgency Level: Medium Recommendation: We should reduce the inventory levels by implementing a partial stock liquidation or returning excess stock to the central warehouse to avoid further overstocking and minimize storage costs. To ensure timely replenishment, a reorder quantity of 150 units is suggested, which will maintain a buffer of 30 units above the reorder point (100 units) and provide 2.95 weeks of supply, aligning with industry standards for inventory management."}, {"Branch": "North Branch", "SKU": "GEN-003", "Product_Name": "Sharps Containers 1 Gallon", "Category": "General Supplies", "Current_Stock": 267, "Reorder_Point": 60, "Max_Stock": 300, "Unit_Price_USD": 3.75, "Avg_Weekly_Usage": 27.42, "Weeks_of_Supply": 9.7, "Variance_Pct": 345.0, "Stock_Status": "Overstocked", "Reorder_Urgency": "Low", "AI_Recommendation": "Based on the provided data, I recommend that the North Branch immediately conduct a review and adjustment of its Sharps Containers 1 Gallon inventory levels and reorder point to prevent unnecessary holding costs. I recommend reducing the reorder point from 60 units to 80-100 units, taking into account the high variance and overstocked status of the current inventory. This adjustment will likely require an urgent review and approval process to implement within the next few business days to avoid further overstock accumulation."}, {"Branch": "South Branch", "SKU": "GEN-002", "Product_Name": "Urine Collection Cups", "Category": "General Supplies", "Current_Stock": 770, "Reorder_Point": 200, "Max_Stock": 800, "Unit_Price_USD": 0.45, "Avg_Weekly_Usage": 77.17, "Weeks_of_Supply": 10.0, "Variance_Pct": 285.0, "Stock_Status": "Overstocked", "Reorder_Urgency": "Low", "AI_Recommendation": "Urgency Level: Low to Moderate Given the overstocked status of Urine Collection Cups at the South Branch, I recommend reducing inventory by clearing excess stock through sales or donations to make room for more critical supplies. We should immediately initiate an emergency sale or disposal of 390 units to bring the inventory close to the ideal range."}, {"Branch": "South Branch", "SKU": "GEN-005", "Product_Name": "Disposable Bed Sheets", "Category": "General Supplies", "Current_Stock": 618, "Reorder_Point": 150, "Max_Stock": 700, "Unit_Price_USD": 1.3, "Avg_Weekly_Usage": 60.42, "Weeks_of_Supply": 10.2, "Variance_Pct": 312.0, "Stock_Status": "Overstocked", "Reorder_Urgency": "Low", "AI_Recommendation": "Based on the given data, I recommend the following actions to optimize stock levels and reduce waste. Urgency level: Medium \"Within the next 2 working days, I suggest reordering 100 units of disposable bed sheets to bring our stock levels in line with the average weekly demand and minimize waste. This approach reduces the risk of overstocking while still maintaining a reasonable buffer against supply chain disruptions, and allows for timely restocking before current inventory levels are depleted.\" Rationale: Reducing the stock levels from 618 units to a more balanced level will help minimize the risk of expired or obsolete inventory, reduce storage space requirements, and allow for more efficient inventory management. Additionally, reordering 100 units provides a moderate buffer against"}, {"Branch": "East Branch", "SKU": "PPE-003", "Product_Name": "N95 Respirators (Box/20)", "Category": "PPE", "Current_Stock": 350, "Reorder_Point": 100, "Max_Stock": 400, "Unit_Price_USD": 24.99, "Avg_Weekly_Usage": 32.17, "Weeks_of_Supply": 10.9, "Variance_Pct": 250.0, "Stock_Status": "Overstocked", "Reorder_Urgency": "Low", "AI_Recommendation": "Actionable Recommendation: Urgent (High) We strongly recommend that the East Branch hospital reduce its overstocked N95 Respirators inventory by implementing a revised reorder quantity of 30-50 units, with the goal of lowering the Weeks of Supply Remaining to a more manageable level, such as 4-6 weeks, and closing the gap between the current stock level and the reorder point. This adjustment will help minimize waste, reduce the financial burden of excess inventory, and ensure better inventory management. It is essential to address the overstocked situation urgently due to the critical nature of N95 Respirators in healthcare settings."}, {"Branch": "East Branch", "SKU": "INJ-003", "Product_Name": "IV Tubing Sets", "Category": "Injection & Infusion", "Current_Stock": 737, "Reorder_Point": 200, "Max_Stock": 800, "Unit_Price_USD": 1.95, "Avg_Weekly_Usage": 67.0, "Weeks_of_Supply": 11.0, "Variance_Pct": 268.5, "Stock_Status": "Overstocked", "Reorder_Urgency": "Low", "AI_Recommendation": "Urgency Level: Medium Recommendation: We suggest immediately reducing the East Branch's IV Tubing Sets inventory by 400 units to avoid overstocking and minimize storage waste, and to realign our stock levels with optimal usage. Our suggested reorder quantity is 250 units, below the threshold, to maintain a healthier stock balance and improve inventory turnover. This adjustment will also reduce the overstocked status, making it easier to manage and minimize variances from the reorder point."}, {"Branch": "South Branch", "SKU": "WND-002", "Product_Name": "Bandage Rolls 4 inch", "Category": "Wound Care", "Current_Stock": 650, "Reorder_Point": 150, "Max_Stock": 700, "Unit_Price_USD": 1.1, "Avg_Weekly_Usage": 56.17, "Weeks_of_Supply": 11.6, "Variance_Pct": 333.3, "Stock_Status": "Overstocked", "Reorder_Urgency": "Low", "AI_Recommendation": "Urgency Level: High Actionable Recommendation: Given the overstocked status of Bandage Rolls 4 inch at South Branch with 11.6 weeks of inventory remaining, I urgently recommend ordering 0 units in the next 1-2 weeks to avoid waste and free up storage space. After clearing surplus stock, monitor and adjust the Reorder Point based on actual usage trends to prevent overstocking in the future. Rationale: The current overstocked status necessitates immediate action to avoid unnecessary inventory holding costs and storage space constraints. By clearing surplus stock, the organization can reduce waste and optimize inventory levels for optimal performance. Adjusting the Reorder Point will ensure the organization can respond to changing demand patterns effectively."}, {"Branch": "East Branch", "SKU": "WND-004", "Product_Name": "Antiseptic Wipes (Pack/100)", "Category": "Wound Care", "Current_Stock": 480, "Reorder_Point": 120, "Max_Stock": 500, "Unit_Price_USD": 5.4, "Avg_Weekly_Usage": 38.58, "Weeks_of_Supply": 12.4, "Variance_Pct": 300.0, "Stock_Status": "Overstocked", "Reorder_Urgency": "Low", "AI_Recommendation": "High Urgency Recommendation Due to the overstocked status and significant variance from the reorder point (300.0%), we strongly recommend initiating a corrective action to reduce the inventory levels of Antiseptic Wipes at the East Branch location by releasing excess stock to central inventory or other branches.  We suggest reducing the East Branch inventory by 200 units immediately to bring the stock levels closer to the optimal range and minimize waste, while maintaining a safety stock level in alignment with the business requirements. We recommend re-ordering 80 units of Antiseptic Wipes at the next possible occasion to avoid further overstocking and ensure a smoother stock replenishment process within the recommended limits."}, {"Branch": "East Branch", "SKU": "GEN-006", "Product_Name": "Pulse Oximeter Probes Disposable", "Category": "General Supplies", "Current_Stock": 307, "Reorder_Point": 80, "Max_Stock": 350, "Unit_Price_USD": 2.8, "Avg_Weekly_Usage": 24.58, "Weeks_of_Supply": 12.5, "Variance_Pct": 283.8, "Stock_Status": "Overstocked", "Reorder_Urgency": "Low", "AI_Recommendation": "Urgency Level: Medium Actionable Recommendation: Reduce the overstocked inventory of Pulse Oximeter Probes Disposable at the East Branch by 200 units (approximately 65% of the overstocked quantity) to maintain a more optimal stock level. This will help prevent inventory waste and minimize the risk of obsolescence while still ensuring a 2.5 weeks' supply of inventory (reorder point - 25% of overstocked quantity). Suggested Reorder Quantity: 50-60 units to replenish this reduced inventory level."}];
+
+let currentStatus = 'All';
+let currentBranch = 'All';
+
+function weeksClass(w) {
+  if (w < 1) return 'weeks-critical';
+  if (w < 3) return 'weeks-warning';
+  return 'weeks-ok';
+}
+
+function barColor(status) {
+  if (status === 'Critical') return '#ef4444';
+  if (status === 'Understocked') return '#f59e0b';
+  return '#3b82f6';
+}
+
+function barWidth(row) {
+  const pct = Math.min(Math.abs(row.Variance_Pct), 400);
+  return Math.round((pct / 400) * 100);
+}
+
+function renderTable() {
+  const tbody = document.getElementById('tableBody');
+  tbody.innerHTML = '';
+
+  const filtered = data.filter(r => {
+    const statusMatch = currentStatus === 'All' || r.Stock_Status === currentStatus;
+    const branchMatch = currentBranch === 'All' || r.Branch === currentBranch;
+    return statusMatch && branchMatch;
+  });
+
+  document.getElementById('rowCount').textContent = filtered.length + ' items';
+
+  filtered.forEach(row => {
+    const tr = document.createElement('tr');
+    const sign = row.Variance_Pct > 0 ? '+' : '';
+    const varClass = row.Variance_Pct > 0 ? 'variance-pos' : 'variance-neg';
+    const wClass = weeksClass(row.Weeks_of_Supply);
+    const rec = (row.AI_Recommendation || '').substring(0, 280) + (row.AI_Recommendation && row.AI_Recommendation.length > 280 ? '...' : '');
+
+    tr.innerHTML = `
+      <td>
+        <div class="sku-cell">${row.SKU}</div>
+        <div class="product-name">${row.Product_Name}</div>
+        <div class="category-tag">${row.Category}</div>
+      </td>
+      <td><span class="branch-pill">${row.Branch}</span></td>
+      <td><span class="status-badge ${row.Stock_Status}"><span class="status-dot"></span>${row.Stock_Status}</span></td>
+      <td>
+        <div class="metric-value">${row.Current_Stock} <span style="color:var(--muted);font-size:10px;">units</span></div>
+        <div class="metric-sub">Reorder @ ${row.Reorder_Point}</div>
+        <div class="bar-wrap" style="margin-top:6px;">
+          <div class="bar-track">
+            <div class="bar-fill" style="width:${Math.min(row.Current_Stock/row.Max_Stock*100,100).toFixed(0)}%;background:${barColor(row.Stock_Status)};"></div>
+          </div>
+          <span style="font-family:var(--mono);font-size:9px;color:var(--muted);">${(row.Current_Stock/row.Max_Stock*100).toFixed(0)}%</span>
+        </div>
+      </td>
+      <td><span class="metric-value ${wClass}">${row.Weeks_of_Supply}w</span></td>
+      <td><span class="${varClass}">${sign}${row.Variance_Pct}%</span></td>
+      <td class="ai-rec-cell">
+        <div class="ai-tag">Groq AI · llama-3.1</div>
+        <div class="ai-text">${rec}</div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function filterStatus(status) {
+  currentStatus = status;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  renderTable();
+}
+
+function filterBranch(branch) {
+  currentBranch = branch;
+  renderTable();
+}
+
+renderTable();
+</script>
+</body>
+</html>

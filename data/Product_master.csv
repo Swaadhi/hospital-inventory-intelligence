@@ -1,0 +1,21 @@
+SKU,Product_Name,Category,Unit,Unit_Price_USD,Reorder_Point,Max_Stock,Lead_Time_Days,Safety_Stock,WHO_Essential
+PPE-001,Nitrile Examination Gloves (Box/100),PPE,Box,8.99,200,800,3,100,Yes
+PPE-002,Surgical Face Masks (Box/50),PPE,Box,6.5,150,600,3,75,Yes
+PPE-003,N95 Respirators (Box/20),PPE,Box,24.99,100,400,5,50,Yes
+PPE-004,Isolation Gowns Disposable,PPE,Piece,1.75,300,1200,4,150,Yes
+PPE-005,Face Shields Disposable,PPE,Piece,2.1,100,500,4,50,Yes
+INJ-001,Syringes 5ml with Needle,Injection & Infusion,Box/100,12.5,150,600,3,75,Yes
+INJ-002,IV Catheters 18G,Injection & Infusion,Box/50,18.75,100,400,4,50,Yes
+INJ-003,IV Tubing Sets,Injection & Infusion,Piece,1.95,200,800,3,100,Yes
+INJ-004,Infusion Sets with Filter,Injection & Infusion,Piece,2.25,150,600,3,75,Yes
+WND-001,Gauze Swabs Sterile 4x4 (Pack/10),Wound Care,Pack,3.2,200,900,3,100,Yes
+WND-002,Bandage Rolls 4 inch,Wound Care,Roll,1.1,150,700,3,75,Yes
+WND-003,Surgical Adhesive Tape 1 inch,Wound Care,Roll,0.85,100,500,2,50,Yes
+WND-004,Antiseptic Wipes (Pack/100),Wound Care,Pack,5.4,120,500,3,60,Yes
+GEN-001,Tongue Depressors (Pack/100),General Supplies,Pack,2.3,80,400,2,40,No
+GEN-002,Urine Collection Cups,General Supplies,Piece,0.45,200,800,2,100,No
+GEN-003,Sharps Containers 1 Gallon,General Supplies,Piece,3.75,60,300,3,30,No
+GEN-004,Hand Sanitizer 500ml,General Supplies,Bottle,4.2,100,500,2,50,No
+GEN-005,Disposable Bed Sheets,General Supplies,Piece,1.3,150,700,3,75,No
+GEN-006,Pulse Oximeter Probes Disposable,General Supplies,Piece,2.8,80,350,4,40,No
+GEN-007,Oxygen Masks Adult,General Supplies,Piece,3.5,80,350,4,40,No

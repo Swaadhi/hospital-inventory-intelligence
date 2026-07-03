@@ -1,0 +1,170 @@
+Branch,SKU,Product_Name,Category,Current_Stock,Reorder_Point,Max_Stock,Unit_Price_USD,Avg_Weekly_Usage,Weeks_of_Supply,Variance_Pct,Stock_Status,Reorder_Urgency,AI_Recommendation
+West Branch,WND-002,Bandage Rolls 4 inch,Wound Care,53,150,700,1.1,86.33,0.6,-64.7,Critical,Critical,"**Urgency Level: High**
+
+Actionable Recommendation: Immediately replenish the Bandage Rolls 4 inch inventory at the West Branch location with a quantity of 250 units to ensure sufficient stock levels and avoid stockouts. This reorder quantity is approximately 67% above the current stock level and 41% above the established reorder point to account for ongoing demand fluctuations and potential supply chain delays. This expedited action will mitigate the existing critical stock status and maintain a weeks-of-supply cushion of at least 1.5 weeks."
+West Branch,INJ-001,Syringes 5ml with Needle,Injection & Infusion,52,150,600,12.5,84.0,0.6,-65.3,Critical,Critical,"**Urgency Level: High**
+
+Given the critical stock status and weeks of supply remaining, I recommend that the West Branch immediately place an emergency order for 230 units of Syringes 5ml with Needle to replenish their inventory and ensure ongoing patient care. This order will ensure that the branch meets its average weekly demand until the next regular ordering cycle, minimizing the risk of stockouts."
+North Branch,GEN-002,Urine Collection Cups,General Supplies,67,200,800,0.45,95.83,0.7,-66.5,Critical,Critical,"**Actionable Recommendation: High Urgency (Urgency Level: 9/10)**
+
+Reorder 233 units of Urine Collection Cups immediately to replenish the critical stock level at North Branch. This is slightly above the average weekly usage to ensure a stable supply, while taking into account the current stock and critical stock status to avoid any service disruptions. Monitor the inventory and adjust the reorder point as needed to maintain an optimal stock level."
+North Branch,INJ-004,Infusion Sets with Filter,Injection & Infusion,53,150,600,2.25,74.33,0.7,-64.7,Critical,Critical,"**Urgency Level: High**
+
+Given the critical stock status and negative variance from the reorder point, I recommend an **Emergency Reorder with a Suggested Quantity of 200-250 units** to ensure North Branch has adequate inventory to meet its average weekly usage of 74.33 units. This urgent reordering will prevent stockouts and maintain business continuity, while also providing a buffer to absorb any potential variability in usage."
+North Branch,PPE-003,N95 Respirators (Box/20),PPE,35,100,400,24.99,49.67,0.7,-65.0,Critical,Critical,"**Urgency Level: High**
+
+Recommendation: We strongly advise Replenishing the North Branch's N95 Respirators immediately, with an urgent order of at least 250 units to bring the branch's stock level to a more sustainable 5-7 weeks of supply and ensure uninterrupted patient care. This order should be expedited to meet the critical stock status and prevent a stockout situation."
+North Branch,GEN-007,Oxygen Masks Adult,General Supplies,27,80,350,3.5,35.5,0.8,-66.2,Critical,Critical,"**Recommendation:** Given the critical stock status and high variance from the reorder point at North Branch, I recommend an immediate reorder of 150 units of Oxygen Masks Adult. This quantity ensures a minimum of 2 weeks of supply at an average usage rate, while also allowing for replenishment of the stock in time to prevent future stockouts. **Urgency: High**"
+South Branch,PPE-004,Isolation Gowns Disposable,PPE,103,300,1200,1.75,128.92,0.8,-65.7,Critical,Critical,"**High Urgency Recommendation**
+
+Based on the critical stock status and variance from the reorder point, I strongly recommend ordering 300-400 units of Isolation Gowns Disposable to replenish the stock at South Branch as soon as possible. This urgent action is necessary to prevent stockouts and ensure continuous supply of essential PPE, minimizing disruptions to patient care. Order validation and confirmation should be expedited to prevent further delays in delivery."
+South Branch,GEN-006,Pulse Oximeter Probes Disposable,General Supplies,28,80,350,2.8,35.08,0.8,-65.0,Critical,Critical,"**Urgency Level: High Priority**
+
+Considering the critical stock status and the significant variance (-65%) from the reorder point, I recommend that the South Branch immediately orders an additional 150 units of Pulse Oximeter Probes Disposable to replenish stock and avoid any stockouts or delays in patient care. This order should be expedited to ensure timely delivery and prevent any potential disruptions."
+South Branch,WND-001,Gauze Swabs Sterile 4x4 (Pack/10),Wound Care,66,200,900,3.2,74.25,0.9,-67.0,Critical,Critical,"**Urgency Level: High**
+
+I strongly recommend that the South Branch immediately replenishes its stock of Gauze Swabs Sterile 4x4 to avoid a stockout, as the current stock of 66 units will deplete within a week. To address this critical shortage, I suggest ordering 300-400 units as soon as possible, which will not only meet the reorder point but also provide a buffer to account for potential fluctuations in demand. This expedited restock should be prioritized to maintain supply chain continuity and ensure uninterrupted patient care."
+East Branch,PPE-002,Surgical Face Masks (Box/50),PPE,52,150,600,6.5,50.83,1.0,-65.3,Critical,Critical,"**Urgency Level: High**
+
+**Recommended Action:** Reorder 300 units of Surgical Face Masks as soon as possible to maintain a minimum of 3 weeks of inventory supply and avoid future stockouts. Given the critical stock status and significant variance (-65.3%) from the reorder point, this proactive adjustment will help mitigate supply chain risks and ensure business continuity."
+East Branch,INJ-002,IV Catheters 18G,Injection & Infusion,34,100,400,18.75,31.42,1.1,-66.0,Critical,Critical,"**Urgency Level: Critical**
+
+Based on the low stock status, we recommend that East Branch urgently place a reorder for 100 units of IV Catheters 18G to replenish the inventory and meet the average weekly demand. This is imperative to avoid stockouts and minimize service disruptions. 
+
+**Suggested Reorder Quantity:** 120 units (to account for any unexpected delays and ensure timely restocking)"
+East Branch,GEN-001,Tongue Depressors (Pack/100),General Supplies,29,80,400,2.3,25.08,1.2,-63.7,Critical,Critical,"Recommendation:
+
+**Level: High Urgency (Immediate Action Required)**
+
+We strongly advise East Branch to place an emergency order for approximately 120 units of Tongue Depressors (Pack/100) to restore the stock to a more manageable level and prevent stockouts. This reorder quantity will help replenish the stock, ensuring that the branch has a minimum of 3 weeks of supply (exceeding the desired 2 weeks) and will help maintain sufficient inventory levels moving forward."
+West Branch,PPE-003,N95 Respirators (Box/20),PPE,77,100,400,24.99,58.92,1.3,-23.0,Understocked,Critical,"**Urgency Level: High**
+
+Based on the current stock status and weekly usage, I recommend a same-day emergency order of 120-150 units of N95 Respirators for the West Branch to meet the upcoming demand and avoid stockouts, taking into account a 15-30% buffer for any unexpected fluctuations. This will enable us to meet the reorder point of 100 units and maintain an optimal stock level of 2-3 weeks of supply, ensuring adequate inventory to support patient care."
+West Branch,INJ-003,IV Tubing Sets,Injection & Infusion,154,200,800,1.95,114.42,1.3,-23.0,Understocked,Critical,"**Urgency Level: High**
+
+Recommendation: Due to the understocked status and low weeks of supply remaining, we should immediately reorder IV Tubing Sets for the West Branch location. To avoid stockouts, a reorder quantity of 350 units should be placed, ensuring that the Weeks of Supply Remaining (WoSR) target range of 2-3 weeks is met at 2.4 weeks."
+West Branch,GEN-007,Oxygen Masks Adult,General Supplies,57,80,350,3.5,44.5,1.3,-28.7,Understocked,Critical,"**Urgency Level: High**
+
+We recommend immediately reordering 140 units of Oxygen Masks Adult for West Branch to replenish inventory and prevent stockouts. This amount ensures the branch maintains a minimum 3 weeks of supply and aligns closely with the reorder point of 80 units, considering the current usage and potential safety stock needed. Given the high usage rate and understocked status, it is essential to expedite this order to avoid stock shortages."
+West Branch,GEN-005,Disposable Bed Sheets,General Supplies,107,150,700,1.3,79.42,1.3,-28.7,Understocked,Critical,"**Urgency Level: High**
+Recommended Action: Immediately place an order for 250-300 units of Disposable Bed Sheets for the West Branch to bring the stock levels to a safe threshold, considering the high average weekly demand and current understocked status. This will help prevent potential stockouts and ensure continued service to patients."
+West Branch,WND-004,Antiseptic Wipes (Pack/100),Wound Care,85,120,500,5.4,62.25,1.4,-29.2,Understocked,Critical,"Actionable Recommendation:
+
+**High Urgency:** Immediately place an order to restock Antiseptic Wipes at West Branch, as the current stock level is critically low, indicating an urgent need for replenishment. 
+
+**Recommended Reorder Quantity:** Order 140 units to 160 units, allowing for a buffer to cover unexpected usage spikes and ensuring a replenishment period that aligns with the expected usage rate while avoiding overstocking.
+
+**Reason:** The current stock level of 85 units is below the recommended reorder point of 120 units, and the remaining stock will cover only 1.4 weeks of usage, which is a relatively short period considering the average weekly usage of 62.25 units. This order will help restore a more stable"
+North Branch,INJ-001,Syringes 5ml with Needle,Injection & Infusion,108,150,600,12.5,76.25,1.4,-28.0,Understocked,Critical,"**Actionable Recommendation:**
+
+**Urgency Level: High**
+
+Immediately place an order for **250 units** of Syringes 5ml with Needle for the North Branch to restock the inventory and avoid stockouts. This is necessary due to the critical understocked status, low weeks of supply remaining, and high average weekly usage. 
+
+**Rationale:** Ordering 250 units will also help to build some buffer stock to ensure that the branch can operate without stockouts for a reasonable period and will help to avoid frequent reorders."
+North Branch,PPE-001,Nitrile Examination Gloves (Box/100),PPE,148,200,800,8.99,103.75,1.4,-26.0,Understocked,Critical,"**Actionable Recommendation:** 
+
+Urgency Level: High
+
+Given the current stock status of 'Understocked' and only 1.4 weeks of supply remaining, it is essential to immediately place a reordering action for the Nitrile Examination Gloves. We recommend ordering at least 420 units (2 weeks of supply) to replenish inventory to a safe level and ensure uninterrupted supply to the North Branch. 
+
+This proactive measure will also prevent potential stockouts, minimize the risk of missed orders, and maintain optimal inventory levels while aligning with the established reorder point of 200 units."
+North Branch,GEN-005,Disposable Bed Sheets,General Supplies,112,150,700,1.3,72.83,1.5,-25.3,Understocked,Critical,"**Actionable Recommendation: High Urgency**
+
+Due to the extremely low levels of disposable bed sheets at North Branch, which are running 25.3% below the reorder point, we recommend reordering **300 units** immediately to restock the inventory and avoid stockouts. This replenishment will help to meet the average weekly usage of 72.83 units, increasing the weeks of supply remaining to at least 4.2 weeks and ensuring that the inventory is no longer understocked."
+North Branch,WND-002,Bandage Rolls 4 inch,Wound Care,107,150,700,1.1,68.5,1.6,-28.7,Understocked,Critical,"Based on the given data, I recommend that North Branch reorders 240-300 units of 4-inch Bandage Rolls immediately (urgent) to replenish their stock and bring their Weeks of Supply Remaining up to a more optimal level of 3-4 weeks. This is necessary to avoid stockouts and ensure uninterrupted patient care. Due to the high usage rate and current stock levels, it is crucial to act quickly to prevent an understocked situation."
+South Branch,PPE-002,Surgical Face Masks (Box/50),PPE,108,150,600,6.5,64.5,1.7,-28.0,Understocked,Critical,"I recommend reordering Surgical Face Masks for the South Branch with a high urgency due to the understocked status and low weeks of supply remaining (1.7 weeks). To replenish stock levels, I suggest ordering a quantity that takes into account the average weekly usage and ensures a safety stock buffer, such as 200-220 units. This will cover approximately 3-3.5 weeks of supply, allowing the branch to return to a more optimal stock status and buffer against future demand fluctuations."
+South Branch,WND-004,Antiseptic Wipes (Pack/100),Wound Care,86,120,500,5.4,48.58,1.8,-28.3,Understocked,Critical,"**Urgency Level: High**
+
+Given the understocked status and only 1.8 weeks of supply remaining, I recommend a same-day reordering of 180 units to meet the average weekly usage and prevent a potential stockout at the South Branch. This will ensure timely replenishment and bring the branch's stock level up to 266 units, exceeding the reorder point of 120 units to avoid future stockouts."
+South Branch,INJ-003,IV Tubing Sets,Injection & Infusion,150,200,800,1.95,79.08,1.9,-25.0,Understocked,Critical,"**Actionable Recommendation: High-Urgency (Request for Reorder within the next 2 working days)**
+
+We need to quickly restock the IV Tubing Sets at South Branch to maintain a minimum 2-week supply and avoid stockouts. To do this, we recommend reordering 250 units of IV Tubing Sets as a one-time replenishment order to quickly meet the reordering threshold (200 units), with an additional 50 units to cover increased demand and reduce the risk of stock depletion."
+South Branch,GEN-003,Sharps Containers 1 Gallon,General Supplies,46,60,300,3.75,24.25,1.9,-23.3,Understocked,Critical,"**Urgency Level: High**
+**Actionable Recommendation:** Immediately order 90 units of Sharps Containers 1 Gallon to replenish the severely understocked condition at South Branch, ensuring sufficient supply to meet the average weekly usage of 24.25 units. This order will provide a buffer to maintain a minimum of 3 weeks of supply, reducing the risk of stockouts and ensuring continuity of patient care. Due to the -23.3% variance from the reorder point, it is essential to act quickly to prevent further stock depletion."
+East Branch,PPE-005,Face Shields Disposable,PPE,73,100,500,2.1,34.0,2.1,-27.0,Understocked,High,"Based on the inventory data, I recommend immediately reordering 127 units of Face Shields Disposable with high urgency due to the understocked status and low weeks of supply remaining. This reorder quantity will bring the total stock up to 200 units, well above the reorder point, and ensure a replenishment timeline of approximately 4.8 weeks, providing a reasonable buffer for future demand. This action will help prevent stockouts and maintain inventory levels at a safe threshold."
+East Branch,WND-003,Surgical Adhesive Tape 1 inch,Wound Care,77,100,500,0.85,32.58,2.4,-23.0,Understocked,High,"**Urgency Level: High**
+
+Considering the understocked status and the low weeks of supply remaining (2.4 weeks), I strongly recommend **reordering 180 units of Surgical Adhesive Tape 1 inch for East Branch** immediately. This will ensure that the branch maintains a sufficient stock level and avoids stockouts, meeting the average weekly demand and replenishing the inventory up to 100 units (the reorder point)."
+East Branch,WND-001,Gauze Swabs Sterile 4x4 (Pack/10),Wound Care,145,200,900,3.2,61.33,2.4,-27.5,Understocked,High,"**Urgency Level: High**
+
+I recommend that East Branch immediately reorders 350 units of Gauze Swabs Sterile 4x4 (Pack/10) to ensure sufficient inventory levels and avoid stockouts. This reorder quantity is calculated to cover the average weekly usage for 5.3 weeks, providing a buffer against any potential demand increases. I suggest expediting the reorder process to maintain a stable and reliable inventory supply."
+East Branch,GEN-004,Hand Sanitizer 500ml,General Supplies,71,100,500,4.2,29.42,2.4,-29.0,Understocked,High,"Given the East Branch is understocked and only has 2.4 weeks of supply remaining, I recommend that the hospital administration prioritize an urgent order of Hand Sanitizer 500ml to ensure uninterrupted patient care. I suggest ordering 130 units to replenish the inventory and bring the stock level above the reorder point, considering the 10% buffer for any potential discrepancies. This recommendation should be implemented as soon as possible to prevent stockouts and maintain continuity of essential hygiene supplies."
+West Branch,PPE-004,Isolation Gowns Disposable,PPE,1088,300,1200,1.75,180.83,6.0,262.7,Overstocked,Medium,"**Actionable Recommendation:**
+
+Considering the West Branch's isolation gowns are overstocked by 262.7% and there are 6 weeks of supply remaining, I recommend reducing the stock level as soon as possible by returning or re-shelving excess units to avoid unnecessary holding costs. I suggest a medium-urgency level for this action, as it does not affect immediate patient care needs but can help optimize resource utilization and minimize storage constraints. To balance stock levels and align with the reorder point, I recommend reordering 120 units to ensure an adequate supply for upcoming needs.
+
+**Urgency Level:** Medium (within 2-4 weeks) 
+
+**Reorder Quantity:** 120 units"
+West Branch,PPE-001,Nitrile Examination Gloves (Box/100),PPE,727,200,800,8.99,118.58,6.1,263.5,Overstocked,Medium,"**Urgency Level:** Medium
+
+**Actionable Recommendation:** Reduce the overstocked Nitrile Examination Gloves by ordering 500 units to be received at the West Branch, allowing for a more efficient inventory balance while maintaining a cushion against future demand spikes.
+
+This recommendation aims to mitigate the current overstock, decrease excess storage requirements, and maintain a safety buffer (approximately 2 weeks of supply) to prevent stockouts."
+West Branch,INJ-004,Infusion Sets with Filter,Injection & Infusion,528,150,600,2.25,82.83,6.4,252.0,Overstocked,Medium,"Based on the analysis, I recommend **Immediate** reorder action at the West Branch to align inventory levels with operational needs.
+
+Urgency Level: High
+
+Recommendation: Reorder **180 units** of Infusion Sets with Filter to reduce the stock level to a safe zone (weeks of supply remaining at 4) and improve inventory turnover while avoiding unnecessary holding costs associated with overstocking.
+
+This reorder quantity is a conservative approach, taking into account the current reorder point and avoiding overstocking."
+North Branch,PPE-002,Surgical Face Masks (Box/50),PPE,576,150,600,6.5,79.33,7.3,284.0,Overstocked,Medium,"**Actionable Recommendation:**
+
+With the current overstocked status and significant variance from the reorder point, I recommend reducing inventory levels at North Branch by minimizing future orders. **Urgency Level: High**. To achieve this, I suggest **reordering 100 units** of Surgical Face Masks immediately to replenish stock and avoid further overstocking, and adjust the procurement process to ensure orders are aligned with actual demand to avoid future imbalances.
+
+This approach will reduce unnecessary inventory holding costs, minimize waste, and optimize supply chain efficiency, while also ensuring adequate stock is maintained to meet ongoing demand."
+North Branch,INJ-002,IV Catheters 18G,Injection & Infusion,351,100,400,18.75,46.25,7.6,251.0,Overstocked,Medium,"**Actionable Recommendation:**
+
+Based on the current stock levels and usage patterns, I strongly recommend that the North Branch hospital reduces its stock levels by minimizing non-essential orders. We should sell or transfer excess units to other branches and implement a corrective action to prevent overstocking. The urgency level for this issue is **High** due to the significant stock surplus and potential financial implications.
+
+**Urgency Level:** High
+
+**Suggested Reorder Quantity:** Immediately reduce stock levels, but for reordering purposes, initiate a smaller quantity order (e.g., 50-75 units) to allow some buffer while preventing overstocking and aligning with the current utilization rate. Regular reviews should ensure the reorder point is updated to reflect accurate data and"
+West Branch,GEN-001,Tongue Depressors (Pack/100),General Supplies,379,80,400,2.3,47.08,8.1,373.8,Overstocked,Low,"**Actionable Recommendation:**
+
+Due to the significant overstock (373.8% above reorder point) at the West Branch for Tongue Depressors, we recommend that the inventory be reduced through stockroom adjustments or donations to other facilities by the end of the quarter to maintain optimal inventory levels. It is imperative that this action be taken by **Urgency Level: High** to avoid further overstock accumulation. **Recommended Reorder Quantity:** 80 units to maintain optimal stock levels, aligning with the set reorder point."
+West Branch,GEN-004,Hand Sanitizer 500ml,General Supplies,472,100,500,4.2,56.83,8.3,372.0,Overstocked,Low,"Based on the provided inventory data, I recommend reducing the overstock of Hand Sanitizer 500ml at the West Branch by **immediately selling or transferring 200 units** (a quantity that would align with the current usage rate of 56.83 units per week) to mitigate excessive inventory levels and maintain a more optimal stock balance. This action is **high urgency**, as the current stock levels suggest a significant surplus (over 372% above the reorder point)."
+South Branch,PPE-001,Nitrile Examination Gloves (Box/100),PPE,744,200,800,8.99,85.5,8.7,272.0,Overstocked,Low,"**Urgency Level: Medium-High**
+
+Recommendation (Immediate Action Required): Reduce the inventory of Nitrile Examination Gloves by 400 units to avoid holding excessive stock. Order a new shipment of 400 units to adjust the stock level to meet demand and replenish inventory for the next 8.7 weeks."
+South Branch,INJ-001,Syringes 5ml with Needle,Injection & Infusion,567,150,600,12.5,61.08,9.3,278.0,Overstocked,Low,"**Actionable Recommendation: Urgency - High**
+
+Given the significant overstock (278% variance from reorder point) and long lead time before a low stock situation (9.3 weeks), we should promptly reduce inventory stock levels. **Immediate Reorder Quantity:** Calculate and order 50 units (33% of the current stock) to alleviate overstocked conditions while still maintaining a buffer for fluctuations. Reorder promptly to minimize excess holding costs and optimize supply chain efficiency."
+North Branch,WND-003,Surgical Adhesive Tape 1 inch,Wound Care,481,100,500,0.85,51.08,9.4,381.0,Overstocked,Low,"**Urgency Level: Medium**
+
+Recommendation: We should reduce the inventory levels by implementing a partial stock liquidation or returning excess stock to the central warehouse to avoid further overstocking and minimize storage costs. To ensure timely replenishment, a reorder quantity of 150 units is suggested, which will maintain a buffer of 30 units above the reorder point (100 units) and provide 2.95 weeks of supply, aligning with industry standards for inventory management."
+North Branch,GEN-003,Sharps Containers 1 Gallon,General Supplies,267,60,300,3.75,27.42,9.7,345.0,Overstocked,Low,"Based on the provided data, I recommend that the North Branch immediately conduct a review and adjustment of its Sharps Containers 1 Gallon inventory levels and reorder point to prevent unnecessary holding costs. I recommend reducing the reorder point from 60 units to 80-100 units, taking into account the high variance and overstocked status of the current inventory. This adjustment will likely require an urgent review and approval process to implement within the next few business days to avoid further overstock accumulation."
+South Branch,GEN-002,Urine Collection Cups,General Supplies,770,200,800,0.45,77.17,10.0,285.0,Overstocked,Low,"**Urgency Level: Low to Moderate**
+
+Given the overstocked status of Urine Collection Cups at the South Branch, I recommend **reducing inventory by clearing excess stock through sales or donations** to make room for more critical supplies. We should immediately **initiate an emergency sale or disposal** of 390 units to bring the inventory close to the ideal range."
+South Branch,GEN-005,Disposable Bed Sheets,General Supplies,618,150,700,1.3,60.42,10.2,312.0,Overstocked,Low,"Based on the given data, I recommend the following actions to optimize stock levels and reduce waste.
+
+**Urgency level: Medium**
+
+""Within the next 2 working days, I suggest reordering 100 units of disposable bed sheets to bring our stock levels in line with the average weekly demand and minimize waste. This approach reduces the risk of overstocking while still maintaining a reasonable buffer against supply chain disruptions, and allows for timely restocking before current inventory levels are depleted.""
+
+**Rationale:** Reducing the stock levels from 618 units to a more balanced level will help minimize the risk of expired or obsolete inventory, reduce storage space requirements, and allow for more efficient inventory management. Additionally, reordering 100 units provides a moderate buffer against"
+East Branch,PPE-003,N95 Respirators (Box/20),PPE,350,100,400,24.99,32.17,10.9,250.0,Overstocked,Low,"**Actionable Recommendation: Urgent (High)**
+
+We strongly recommend that the East Branch hospital reduce its overstocked N95 Respirators inventory by implementing a revised reorder quantity of 30-50 units, with the goal of lowering the Weeks of Supply Remaining to a more manageable level, such as 4-6 weeks, and closing the gap between the current stock level and the reorder point. This adjustment will help minimize waste, reduce the financial burden of excess inventory, and ensure better inventory management. It is essential to address the overstocked situation urgently due to the critical nature of N95 Respirators in healthcare settings."
+East Branch,INJ-003,IV Tubing Sets,Injection & Infusion,737,200,800,1.95,67.0,11.0,268.5,Overstocked,Low,"**Urgency Level: Medium**
+
+Recommendation: We suggest immediately reducing the East Branch's IV Tubing Sets inventory by 400 units to avoid overstocking and minimize storage waste, and to realign our stock levels with optimal usage. Our suggested reorder quantity is 250 units, below the threshold, to maintain a healthier stock balance and improve inventory turnover. This adjustment will also reduce the overstocked status, making it easier to manage and minimize variances from the reorder point."
+South Branch,WND-002,Bandage Rolls 4 inch,Wound Care,650,150,700,1.1,56.17,11.6,333.3,Overstocked,Low,"**Urgency Level: High**
+
+**Actionable Recommendation:** Given the overstocked status of Bandage Rolls 4 inch at South Branch with 11.6 weeks of inventory remaining, I urgently recommend ordering 0 units in the next 1-2 weeks to avoid waste and free up storage space. After clearing surplus stock, monitor and adjust the Reorder Point based on actual usage trends to prevent overstocking in the future.
+
+**Rationale:** The current overstocked status necessitates immediate action to avoid unnecessary inventory holding costs and storage space constraints. By clearing surplus stock, the organization can reduce waste and optimize inventory levels for optimal performance. Adjusting the Reorder Point will ensure the organization can respond to changing demand patterns effectively."
+East Branch,WND-004,Antiseptic Wipes (Pack/100),Wound Care,480,120,500,5.4,38.58,12.4,300.0,Overstocked,Low,"**High Urgency Recommendation**
+
+Due to the overstocked status and significant variance from the reorder point (300.0%), we strongly recommend initiating a corrective action to reduce the inventory levels of Antiseptic Wipes at the East Branch location by releasing excess stock to central inventory or other branches. 
+
+We suggest reducing the East Branch inventory by 200 units immediately to bring the stock levels closer to the optimal range and minimize waste, while maintaining a safety stock level in alignment with the business requirements.
+
+We recommend re-ordering 80 units of Antiseptic Wipes at the next possible occasion to avoid further overstocking and ensure a smoother stock replenishment process within the recommended limits."
+East Branch,GEN-006,Pulse Oximeter Probes Disposable,General Supplies,307,80,350,2.8,24.58,12.5,283.8,Overstocked,Low,"**Urgency Level:** Medium
+
+**Actionable Recommendation:** Reduce the overstocked inventory of Pulse Oximeter Probes Disposable at the East Branch by 200 units (approximately 65% of the overstocked quantity) to maintain a more optimal stock level. This will help prevent inventory waste and minimize the risk of obsolescence while still ensuring a 2.5 weeks' supply of inventory (reorder point - 25% of overstocked quantity).
+
+**Suggested Reorder Quantity:** 50-60 units to replenish this reduced inventory level."
